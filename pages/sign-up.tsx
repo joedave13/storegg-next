@@ -1,6 +1,4 @@
-/* eslint-disable linebreak-style */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable linebreak-style */
 import React from 'react';
 
 export default function SignUp() {
