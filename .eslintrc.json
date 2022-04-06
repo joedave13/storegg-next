@@ -26,6 +26,7 @@
         "jsx-a11y/label-has-associated-control": "off",
         "import/no-unresolved": "off",
         "import/extensions": "off",
-        "jsx-a11y/anchor-is-valid": "off"
+        "jsx-a11y/anchor-is-valid": "off",
+        "object-curly-newline": "off"
     }
 }
