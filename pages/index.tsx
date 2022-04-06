@@ -14,9 +14,7 @@ export default function Home() {
       <Navbar />
 
       <MainBanner />
-
-      <TransactioStep />
-
+      <TransactionStep />
       <FeaturedGame />
 
       <section className="reached pt-50 pb-50">

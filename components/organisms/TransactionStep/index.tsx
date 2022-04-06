@@ -1,6 +1,6 @@
 import StepItem from '../../molecules/StepItem';
 
-export default function TransactioStep() {
+export default function TransactionStep() {
   return (
     <section id="feature" className="feature pt-50 pb-50">
       <div className="container-fluid">
