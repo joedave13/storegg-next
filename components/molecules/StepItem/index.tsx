@@ -1,8 +1,8 @@
-interface StepItemProps {
+export interface StepItemProps {
   icon: 'step1' | 'step2' | 'step3';
-  title: String;
-  desc1: String;
-  desc2: String;
+  title: string;
+  desc1: string;
+  desc2: string;
 }
 
 export default function StepItem(props: StepItemProps) {
