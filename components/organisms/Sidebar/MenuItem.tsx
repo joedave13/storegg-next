@@ -1,7 +1,8 @@
 import cx from 'classnames';
+import Link from 'next/link';
 
 interface MenuItemProps {
-  title: String;
+  title: string;
   icon:
     | 'menu-overview'
     | 'menu-transactions'
@@ -11,10 +12,11 @@ interface MenuItemProps {
     | 'menu-settings'
     | 'menu-logout';
   active?: boolean;
+  href: string;
 }
 
 export default function MenuItem(props: Partial<MenuItemProps>) {
-  const { title, icon, active } = props;
+  const { title, icon, active, href = '/#' } = props;
   const classTitle = cx({
     item: true,
     'mb-30': true,
@@ -31,9 +33,9 @@ export default function MenuItem(props: Partial<MenuItemProps>) {
         alt="menu"
       />
       <p className="item-title m-0">
-        <a href="/#" className="text-lg text-decoration-none">
-          {title}
-        </a>
+        <Link href={href}>
+          <a className="text-lg text-decoration-none">{title}</a>
+        </Link>
       </p>
     </div>
   );
