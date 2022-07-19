@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import GameItem from '../../molecules/GameItem';
+import { getFeaturedGame } from '../../../services/player';
 
 export default function FeaturedGame() {
   const [gameList, setGameList] = useState([]);
 
-  useEffect(async () => {
-    const response = await axios.get(
-      'https://storegg-server-joedave.herokuapp.com/api/v1/player/landing-page'
-    );
-    setGameList(response.data.data);
+  const getFeaturedGameList = useCallback(async () => {
+    const data = await getFeaturedGame();
+    setGameList(data);
+  }, [getFeaturedGame]);
+
+  useEffect(() => {
+    getFeaturedGameList();
   }, []);
 
   return (
