@@ -1,6 +1,17 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import GameItem from '../../molecules/GameItem';
 
 export default function FeaturedGame() {
+  const [gameList, setGameList] = useState([]);
+
+  useEffect(async () => {
+    const response = await axios.get(
+      'https://storegg-server-joedave.herokuapp.com/api/v1/player/landing-page'
+    );
+    setGameList(response.data.data);
+  }, []);
+
   return (
     <section className="featured-game pt-50 pb-50">
       <div className="container-fluid">
@@ -13,31 +24,14 @@ export default function FeaturedGame() {
           className="d-flex flex-row flex-lg-wrap overflow-setting justify-content-lg-between gap-lg-3 gap-4"
           data-aos="fade-up"
         >
-          <GameItem
-            thumbnail="/img/Thumbnail-1.png"
-            title="Super Mechs"
-            category="Mobile"
-          />
-          <GameItem
-            thumbnail="/img/Thumbnail-2.png"
-            title="Call of Duty: Modern"
-            category="Mobile"
-          />
-          <GameItem
-            thumbnail="/img/Thumbnail-3.png"
-            title="Mobile Legends"
-            category="Mobile"
-          />
-          <GameItem
-            thumbnail="/img/Thumbnail-4.png"
-            title="Clash of Clans"
-            category="Mobile"
-          />
-          <GameItem
-            thumbnail="/img/Thumbnail-5.png"
-            title="Valorant"
-            category="Desktop"
-          />
+          {gameList.map((item) => (
+            <GameItem
+              key={item._id}
+              thumbnail={`https://storegg-server-joedave.herokuapp.com/uploads/${item.thumbnail}`}
+              title={item.name}
+              category={item.category.name}
+            />
+          ))}
         </div>
       </div>
     </section>
