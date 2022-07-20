@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
+import { CategoryTypes } from '../services/data-types';
 import { getGameCategory } from '../services/player';
 
 export default function SignUpPhoto() {
@@ -68,7 +69,7 @@ export default function SignUpPhoto() {
                   <option value="" hidden selected>
                     Select Category
                   </option>
-                  {categories.map((category) => (
+                  {categories.map((category: CategoryTypes) => (
                     <option key={category._id} value={category._id}>
                       {category.name}
                     </option>
