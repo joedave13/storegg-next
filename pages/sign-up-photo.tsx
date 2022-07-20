@@ -106,9 +106,6 @@ export default function SignUpPhoto() {
                   value={favorite}
                   onChange={(e) => setFavorite(e.target.value)}
                 >
-                  <option value="" hidden selected>
-                    Select Category
-                  </option>
                   {categories.map((category: CategoryTypes) => (
                     <option key={category._id} value={category._id}>
                       {category.name}
