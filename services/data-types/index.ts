@@ -18,3 +18,17 @@ export interface NominalItemTypes {
     coinName: string;
     price: number;
 }
+
+export interface BankTypes {
+    _id: string;
+    name: string;
+    bankName: string;
+    accountNumber: string;
+}
+
+export interface PaymentItemTypes {
+    _id: string;
+    type: string;
+    status: string;
+    banks: BankTypes[]
+}
