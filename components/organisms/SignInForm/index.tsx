@@ -1,6 +1,42 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { signIn } from '../../../services/auth';
 
 export default function SignInForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const router = useRouter();
+
+  const onSubmit = async () => {
+    if (!email) {
+      toast.error('Email address is required!');
+    }
+
+    if (!password) {
+      toast.error('Password is required!');
+    }
+
+    if (email && password) {
+      const data = {
+        email,
+        password,
+      };
+
+      const response = await signIn(data);
+
+      if (response.error) {
+        toast.error(response.message);
+      } else {
+        toast.success(response.message);
+        router.push('/');
+      }
+    }
+  };
+
   return (
     <>
       <h2 className="text-4xl fw-bold color-palette-1 mb-10">Sign In</h2>
@@ -18,7 +54,8 @@ export default function SignInForm() {
           type="email"
           className="form-control rounded-pill text-lg"
           id="email"
-          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           aria-describedby="email"
           placeholder="Enter your email address"
         />
@@ -34,19 +71,20 @@ export default function SignInForm() {
           type="password"
           className="form-control rounded-pill text-lg"
           id="password"
-          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           aria-describedby="password"
           placeholder="Your password"
         />
       </div>
       <div className="button-group d-flex flex-column mx-auto pt-50">
-        <a
+        <button
+          type="button"
           className="btn btn-sign-in fw-medium text-lg text-white rounded-pill mb-16"
-          href="../index.html"
-          role="button"
+          onClick={onSubmit}
         >
           Continue to Sign In
-        </a>
+        </button>
         <Link href="/sign-up">
           <a
             className="btn btn-sign-up fw-medium text-lg color-palette-1 rounded-pill"
@@ -56,6 +94,7 @@ export default function SignInForm() {
           </a>
         </Link>
       </div>
+      <ToastContainer theme="colored" />
     </>
   );
 }
