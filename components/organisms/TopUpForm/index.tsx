@@ -1,7 +1,10 @@
+import { NominalItemTypes } from '../../../services/data-types';
 import NominalItem from './NominalItem';
 import PaymentItem from './PaymentItem';
 
-export default function TopUpForm() {
+export default function TopUpForm(props) {
+  const { nominals, payments } = props;
+
   return (
     <form action="./checkout.html" method="POST">
       <div className="pt-md-50 pt-30">
@@ -27,24 +30,15 @@ export default function TopUpForm() {
           Nominal Top Up
         </p>
         <div className="row justify-content-between">
-          <NominalItem
-            _id="123"
-            coinQuantity={200}
-            coinName="GOLD"
-            price={200000}
-          />
-          <NominalItem
-            _id="124"
-            coinQuantity={200}
-            coinName="GOLD"
-            price={200000}
-          />
-          <NominalItem
-            _id="125"
-            coinQuantity={200}
-            coinName="GOLD"
-            price={200000}
-          />
+          {nominals.map((nominal: NominalItemTypes) => (
+            <NominalItem
+              key={nominal._id}
+              _id={nominal._id}
+              coinQuantity={nominal.coinQuantity}
+              coinName={nominal.coinName}
+              price={nominal.price}
+            />
+          ))}
           <div className="col-lg-4 col-sm-6" />
         </div>
       </div>
@@ -54,8 +48,15 @@ export default function TopUpForm() {
         </p>
         <fieldset id="paymentMethod">
           <div className="row justify-content-between">
-            <PaymentItem bankId="1234" type="Transfer" name="Mandiri" />
-            <PaymentItem bankId="1235" type="Transfer" name="Mandiri" />
+            {payments.map((payment) =>
+              payment.banks.map((bank) => (
+                <PaymentItem
+                  bankId={bank._id}
+                  type={payment.type}
+                  name={bank.bankName}
+                />
+              ))
+            )}
             <div className="col-lg-4 col-sm-6" />
           </div>
         </fieldset>
