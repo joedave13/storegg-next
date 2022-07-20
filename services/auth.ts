@@ -5,7 +5,7 @@ const ROOT_API = process.env.NEXT_PUBLIC_API;
 const API_VERSION = 'api/v1';
 
 export async function signUp(data: FormData) {
-  const url = `${ROOT_API}/${API_VERSION}/auth/sign-in`;
+  const url = `${ROOT_API}/${API_VERSION}/auth/sign-up`;
 
   return callApi({
     url,
