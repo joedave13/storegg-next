@@ -1,6 +1,9 @@
 /* eslint-disable react/jsx-curly-newline */
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { signUp } from '../services/auth';
 import { CategoryTypes } from '../services/data-types';
 import { getGameCategory } from '../services/player';
@@ -15,6 +18,7 @@ export default function SignUpPhoto() {
     email: '',
     password: '',
   });
+  const router = useRouter();
 
   const getGameCategoryApi = useCallback(async () => {
     const data = await getGameCategory();
@@ -47,6 +51,14 @@ export default function SignUpPhoto() {
     data.append('avatar', avatar);
 
     const result = await signUp(data);
+    if (result.error === 1) {
+      toast.error(result.message);
+    } else {
+      localStorage.removeItem('user-form');
+
+      toast.success('Register successfully!');
+      router.push('/sign-up-success');
+    }
   };
 
   return (
@@ -134,6 +146,7 @@ export default function SignUpPhoto() {
           </div>
         </form>
       </div>
+      <ToastContainer theme="colored" />
     </section>
   );
 }
