@@ -13,8 +13,18 @@ export async function getFeaturedGame() {
   return axiosResponse.data;
 }
 
-export async function getDetailVoucher(id) {
+export async function getDetailVoucher(id: string) {
   const URL = `player/${id}/detail`;
+  const fullUrl = `${ROOT_API}/${API_VERSION}/${URL}`;
+
+  const response = await axios.get(fullUrl);
+  const axiosResponse = response.data;
+
+  return axiosResponse.data;
+}
+
+export async function getGameCategory() {
+  const URL = 'player/category';
   const fullUrl = `${ROOT_API}/${API_VERSION}/${URL}`;
 
   const response = await axios.get(fullUrl);
