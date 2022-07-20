@@ -1,11 +1,20 @@
+/* eslint-disable react/jsx-curly-newline */
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
+import { signUp } from '../services/auth';
 import { CategoryTypes } from '../services/data-types';
 import { getGameCategory } from '../services/player';
 
 export default function SignUpPhoto() {
   const [categories, setCategories] = useState([]);
   const [favorite, setFavorite] = useState('');
+  const [avatar, setAvatar] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [localForm, setLocalForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
 
   const getGameCategoryApi = useCallback(async () => {
     const data = await getGameCategory();
@@ -17,8 +26,27 @@ export default function SignUpPhoto() {
     getGameCategoryApi();
   }, []);
 
-  const onSubmit = () => {
-    console.log(favorite);
+  useEffect(() => {
+    const getLocalForm = localStorage.getItem('user-form');
+    setLocalForm(JSON.parse(getLocalForm));
+  }, []);
+
+  const onSubmit = async () => {
+    const getLocalForm = await localStorage.getItem('user-form');
+    const form = JSON.parse(getLocalForm);
+    const data = new FormData();
+
+    data.append('name', form.name);
+    data.append('email', form.email);
+    data.append('username', form.name);
+    data.append('password', form.password);
+    data.append('phoneNumber', '081234567890');
+    data.append('role', 'USER');
+    data.append('status', 'Y');
+    data.append('favorite', favorite);
+    data.append('avatar', avatar);
+
+    const result = await signUp(data);
   };
 
   return (
@@ -30,26 +58,38 @@ export default function SignUpPhoto() {
               <div className="mb-20">
                 <div className="image-upload text-center">
                   <label htmlFor="avatar">
-                    <Image
-                      src="/icon/upload.svg"
-                      width={120}
-                      height={120}
-                      alt="upload"
-                    />
+                    {avatarPreview ? (
+                      <img
+                        src={avatarPreview}
+                        className="img-upload"
+                        alt="upload"
+                      />
+                    ) : (
+                      <Image
+                        src="/icon/upload.svg"
+                        width={120}
+                        height={120}
+                        alt="upload"
+                      />
+                    )}
                   </label>
                   <input
                     id="avatar"
                     type="file"
-                    name="avatar"
                     accept="image/png, image/jpeg"
+                    onChange={(e) => {
+                      const avt = e.target.files![0];
+                      setAvatarPreview(URL.createObjectURL(avt));
+                      return setAvatar(avt);
+                    }}
                   />
                 </div>
               </div>
               <h2 className="fw-bold text-xl text-center color-palette-1 m-0">
-                Shayna Anne
+                {localForm.name}
               </h2>
               <p className="text-lg text-center color-palette-1 m-0">
-                shayna@anne.com
+                {localForm.email}
               </p>
               <div className="pt-50 pb-50">
                 <label
