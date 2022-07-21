@@ -2,25 +2,34 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
+import { useRouter } from 'next/router';
+import { JWTPayloadTypes, UserTypes } from '../../../services/data-types';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState({
     avatar: '',
   });
+  const router = useRouter();
 
   useEffect(() => {
     const token = Cookies.get('token');
     if (token) {
       const jwtToken = atob(token);
-      const payload = jwtDecode(jwtToken);
-      const userData = payload.player;
+      const payload: JWTPayloadTypes = jwtDecode(jwtToken);
+      const userData: UserTypes = payload.player;
       const IMG = process.env.NEXT_PUBLIC_IMAGE;
       userData.avatar = `${IMG}/player/${userData.avatar}`;
       setUser(userData);
       setIsLogin(true);
     }
   }, []);
+
+  const signOut = () => {
+    Cookies.remove('token');
+    setIsLogin(false);
+    router.push('/');
+  };
 
   if (isLogin) {
     return (
@@ -68,9 +77,13 @@ export default function Auth() {
               </Link>
             </li>
             <li>
-              <Link href="/sign-in">
-                <a className="dropdown-item text-lg color-palette-2">Log Out</a>
-              </Link>
+              <button
+                onClick={signOut}
+                type="button"
+                className="dropdown-item text-lg color-palette-2"
+              >
+                Log Out
+              </button>
             </li>
           </ul>
         </div>
