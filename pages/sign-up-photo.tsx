@@ -2,8 +2,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { signUp } from '../services/auth';
 import { CategoryTypes } from '../services/data-types';
 import { getGameCategory } from '../services/player';
@@ -146,7 +145,6 @@ export default function SignUpPhoto() {
           </div>
         </form>
       </div>
-      <ToastContainer theme="colored" />
     </section>
   );
 }
