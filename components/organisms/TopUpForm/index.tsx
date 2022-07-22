@@ -1,4 +1,9 @@
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
+  BankTypes,
   NominalItemTypes,
   PaymentItemTypes,
 } from '../../../services/data-types';
@@ -12,6 +17,59 @@ interface TopUpFormProps {
 
 export default function TopUpForm(props: TopUpFormProps) {
   const { nominals, payments } = props;
+  const [verifyId, setVerifyId] = useState('');
+  const [bankAccountName, setBankAccountName] = useState('');
+  const [nominalItem, setNominalItem] = useState({});
+  const [paymentItem, setPaymentItem] = useState({});
+  const router = useRouter();
+
+  const onNominalItemChange = (data: NominalItemTypes) => {
+    setNominalItem(data);
+  };
+
+  const onPaymentItemChange = (payment: PaymentItemTypes, bank: BankTypes) => {
+    const data = {
+      payment,
+      bank,
+    };
+    setPaymentItem(data);
+  };
+
+  const onSubmit = () => {
+    let condition = true;
+
+    if (!verifyId) {
+      toast.error('Verify ID is required!');
+      condition = false;
+    }
+
+    if (Object.keys(nominalItem).length === 0) {
+      toast.error('Nominal is required!');
+      condition = false;
+    }
+
+    if (Object.keys(paymentItem).length === 0) {
+      toast.error('Payment type is required!');
+      condition = false;
+    }
+
+    if (!bankAccountName) {
+      toast.error('Bank account name is required!');
+      condition = false;
+    }
+
+    if (condition) {
+      const data = {
+        verifyId,
+        bankAccountName,
+        nominalItem,
+        paymentItem,
+      };
+
+      localStorage.setItem('topup-data', JSON.stringify(data));
+      router.push('/checkout');
+    }
+  };
 
   return (
     <form action="./checkout.html" method="POST">
@@ -27,7 +85,8 @@ export default function TopUpForm(props: TopUpFormProps) {
             type="text"
             className="form-control rounded-pill text-lg"
             id="ID"
-            name="ID"
+            value={verifyId}
+            onChange={(e) => setVerifyId(e.target.value)}
             aria-describedby="verifyID"
             placeholder="Enter your ID"
           />
@@ -45,6 +104,7 @@ export default function TopUpForm(props: TopUpFormProps) {
               coinQuantity={nominal.coinQuantity}
               coinName={nominal.coinName}
               price={nominal.price}
+              onChange={() => onNominalItemChange(nominal)}
             />
           ))}
           <div className="col-lg-4 col-sm-6" />
@@ -59,9 +119,11 @@ export default function TopUpForm(props: TopUpFormProps) {
             {payments.map((payment) =>
               payment.banks.map((bank) => (
                 <PaymentItem
+                  key={bank._id}
                   bankId={bank._id}
                   type={payment.type}
                   name={bank.bankName}
+                  onChange={() => onPaymentItemChange(payment, bank)}
                 />
               ))
             )}
@@ -80,20 +142,22 @@ export default function TopUpForm(props: TopUpFormProps) {
           type="text"
           className="form-control rounded-pill text-lg"
           id="bankAccount"
-          name="bankAccount"
+          value={bankAccountName}
+          onChange={(e) => setBankAccountName(e.target.value)}
           aria-describedby="bankAccount"
           placeholder="Enter your Bank Account Name"
         />
       </div>
       <div className="d-sm-block d-flex flex-column w-100">
-        <a
-          href="/checkout"
-          type="submit"
+        <button
+          type="button"
           className="btn btn-submit rounded-pill fw-medium text-white border-0 text-lg"
+          onClick={onSubmit}
         >
           Continue
-        </a>
+        </button>
       </div>
+      <ToastContainer theme="colored" />
     </form>
   );
 }
