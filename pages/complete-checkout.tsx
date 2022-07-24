@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
+import jwtDecode from 'jwt-decode';
+import { JWTPayloadTypes, UserTypes } from '../services/data-types';
 
 export default function CompleteCheckout() {
   return (
@@ -282,4 +284,28 @@ export default function CompleteCheckout() {
       </div>
     </section>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { token } = req.cookies;
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/sign-in',
+        permanent: false,
+      },
+    };
+  }
+
+  const jwtToken = Buffer.from(token, 'base64').toString('ascii');
+  const payload: JWTPayloadTypes = jwtDecode(jwtToken);
+  const userData: UserTypes = payload.player;
+  const IMG = process.env.NEXT_PUBLIC_IMAGE;
+  userData.avatar = `${IMG}/player/${userData.avatar}`;
+
+  return {
+    props: {
+      user: userData,
+    },
+  };
 }
