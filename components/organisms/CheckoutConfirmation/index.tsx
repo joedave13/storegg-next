@@ -32,6 +32,7 @@ export default function CheckoutConfirmation() {
         toast.error(response.message);
       } else {
         toast.success('Checkout Success!');
+        localStorage.removeItem('topup-data');
         router.push('/complete-checkout');
       }
     }
