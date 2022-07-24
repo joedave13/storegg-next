@@ -13,6 +13,12 @@ export async function getDashboard() {
   });
 }
 
-export async function editProfile() {
-  return null;
+export async function getTransactionHistory() {
+  const url = `${ROOT_API}/${API_VERSION}/player/history`;
+
+  return callApi({
+    url,
+    method: 'GET',
+    token: true
+  });
 }

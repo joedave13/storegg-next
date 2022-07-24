@@ -81,7 +81,7 @@ export default function OverviewContent() {
                     item={`${item.historyVoucherTopup.coinQuantity} ${item.historyVoucherTopup.coinName}`}
                     price={item.value}
                     status={item.status}
-                    image={`${IMG}/player/${item.historyVoucherTopup.thumbnail}`}
+                    image={`${IMG}/${item.historyVoucherTopup.thumbnail}`}
                   />
                 ))}
               </tbody>
