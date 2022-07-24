@@ -51,3 +51,12 @@ export interface JWTPayloadTypes {
     player: UserTypes;
     iat: number;
 }
+
+export interface CheckoutItemTypes {
+    voucher: string;
+    nominal: string;
+    payment: string;
+    bank: string;
+    name: string;
+    accountUser: string;
+}
