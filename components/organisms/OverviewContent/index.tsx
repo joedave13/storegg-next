@@ -40,6 +40,7 @@ export default function OverviewContent() {
             <div className="row">
               {count.map((item: CountCategoryTypes) => (
                 <Category
+                  key={item._id}
                   icon={
                     item.name === 'Desktop'
                       ? 'icon-desktop'
@@ -74,6 +75,7 @@ export default function OverviewContent() {
               <tbody>
                 {data.map((item: LatestTransactionTypes) => (
                   <TableRow
+                    key={item._id}
                     title={item.historyVoucherTopup.gameName}
                     category={item.historyVoucherTopup.category}
                     item={`${item.historyVoucherTopup.coinQuantity} ${item.historyVoucherTopup.coinName}`}
