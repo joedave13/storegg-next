@@ -13,8 +13,15 @@ export async function getDashboard() {
   });
 }
 
-export async function getTransactionHistory() {
-  const url = `${ROOT_API}/${API_VERSION}/player/history`;
+export async function getTransactionHistory(status: string) {
+  let params = '';
+
+  if (status === 'ALL') {
+    params = '';
+  } else {
+    params = status;
+  }
+  const url = `${ROOT_API}/${API_VERSION}/player/history?status=${params}`;
 
   return callApi({
     url,

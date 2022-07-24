@@ -9,20 +9,29 @@ import TableRow from './TableRow';
 export default function TransactionContent() {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
+  const [tab, setTab] = useState('ALL');
 
-  const getTransactionHistoryData = useCallback(async () => {
-    const response = await getTransactionHistory();
-    if (response.error) {
-      toast.error(response.message);
-    } else {
-      setData(response.data.data);
-      setTotal(response.data.total);
-    }
-  }, [getTransactionHistory]);
+  const getTransactionHistoryData = useCallback(
+    async (status) => {
+      const response = await getTransactionHistory(status);
+      if (response.error) {
+        toast.error(response.message);
+      } else {
+        setData(response.data.data);
+        setTotal(response.data.total);
+      }
+    },
+    [getTransactionHistory]
+  );
 
   useEffect(() => {
-    getTransactionHistoryData();
+    getTransactionHistoryData('ALL');
   }, []);
+
+  const onTabTransactionClick = (status: string) => {
+    setTab(status);
+    getTransactionHistoryData(status);
+  };
 
   const IMG = process.env.NEXT_PUBLIC_IMAGE;
 
@@ -47,10 +56,26 @@ export default function TransactionContent() {
         <div className="row mt-30 mb-20">
           <div className="col-lg-12 col-12 main-content">
             <div id="list_status_title">
-              <ButtonTab title="All Trx" active />
-              <ButtonTab title="Success" />
-              <ButtonTab title="Pending" />
-              <ButtonTab title="Failed" />
+              <ButtonTab
+                title="All Trx"
+                active={tab === 'ALL'}
+                onClick={() => onTabTransactionClick('ALL')}
+              />
+              <ButtonTab
+                title="Success"
+                active={tab === 'SUCCESS'}
+                onClick={() => onTabTransactionClick('SUCCESS')}
+              />
+              <ButtonTab
+                title="Pending"
+                active={tab === 'PENDING'}
+                onClick={() => onTabTransactionClick('PENDING')}
+              />
+              <ButtonTab
+                title="Failed"
+                active={tab === 'FAILED'}
+                onClick={() => onTabTransactionClick('FAILED')}
+              />
             </div>
           </div>
         </div>
