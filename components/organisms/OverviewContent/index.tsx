@@ -1,7 +1,33 @@
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import {
+  CountCategoryTypes,
+  LatestTransactionTypes,
+} from '../../../services/data-types';
+import { getDashboard } from '../../../services/member';
 import Category from './Category';
 import TableRow from './TableRow';
 
 export default function OverviewContent() {
+  const [count, setCount] = useState([]);
+  const [data, setData] = useState([]);
+
+  const getDashboardData = useCallback(async () => {
+    const response = await getDashboard();
+    if (response.error) {
+      toast.error(response.message);
+    } else {
+      setCount(response.data.count);
+      setData(response.data.data);
+    }
+  }, [getDashboard]);
+
+  useEffect(() => {
+    getDashboardData();
+  }, []);
+
+  const IMG = process.env.NEXT_PUBLIC_IMAGE;
+
   return (
     <main className="main-wrapper">
       <div className="ps-lg-0">
@@ -12,21 +38,20 @@ export default function OverviewContent() {
           </p>
           <div className="main-content">
             <div className="row">
-              <Category icon="icon-desktop" total={18000500}>
-                Game
-                <br />
-                Desktop
-              </Category>
-              <Category icon="icon-mobile" total={8455000}>
-                Game
-                <br />
-                Mobile
-              </Category>
-              <Category icon="icon-other" total={5000000}>
-                Other
-                <br />
-                Categories
-              </Category>
+              {count.map((item: CountCategoryTypes) => (
+                <Category
+                  icon={
+                    item.name === 'Desktop'
+                      ? 'icon-desktop'
+                      : item.name === 'Mobile'
+                      ? 'icon-mobile'
+                      : 'icon-other'
+                  }
+                  total={item.value}
+                >
+                  {item.name}
+                </Category>
+              ))}
             </div>
           </div>
         </div>
@@ -47,38 +72,16 @@ export default function OverviewContent() {
                 </tr>
               </thead>
               <tbody>
-                <TableRow
-                  title="Mobile Legends: The New Battle 2021"
-                  category="Desktop"
-                  item={200}
-                  price={290000}
-                  status="Pending"
-                  image="overview-1"
-                />
-                <TableRow
-                  title="Call of Duty:Modern"
-                  category="Desktop"
-                  item={550}
-                  price={740000}
-                  status="Success"
-                  image="overview-2"
-                />
-                <TableRow
-                  title="Clash of Clans"
-                  category="Mobile"
-                  item={100}
-                  price={120000}
-                  status="Failed"
-                  image="overview-3"
-                />
-                <TableRow
-                  title="The Royal Game"
-                  category="Mobile"
-                  item={225}
-                  price={200000}
-                  status="Pending"
-                  image="overview-4"
-                />
+                {data.map((item: LatestTransactionTypes) => (
+                  <TableRow
+                    title={item.historyVoucherTopup.gameName}
+                    category={item.historyVoucherTopup.category}
+                    item={`${item.historyVoucherTopup.coinQuantity} ${item.historyVoucherTopup.coinName}`}
+                    price={item.value}
+                    status={item.status}
+                    image={`${IMG}/player/${item.historyVoucherTopup.thumbnail}`}
+                  />
+                ))}
               </tbody>
             </table>
           </div>

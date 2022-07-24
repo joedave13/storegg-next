@@ -36,8 +36,8 @@ export default async function callApi({ url, method, data, token }: CallApiProps
 
   const res = {
     error: false,
-    message: 'Login Success',
-    data: response.data.data
+    message: 'Success',
+    data: response.data.count ? response.data : response.data.data
   };
 
   return res;
