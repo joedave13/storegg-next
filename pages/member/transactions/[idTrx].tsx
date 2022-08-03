@@ -1,14 +1,23 @@
 import jwtDecode from 'jwt-decode';
 import Sidebar from '../../../components/organisms/Sidebar';
 import TransactionDetailContent from '../../../components/organisms/TransactionDetailContent';
-import { JWTPayloadTypes, UserTypes } from '../../../services/data-types';
+import {
+  JWTPayloadTypes,
+  LatestTransactionTypes,
+  UserTypes,
+} from '../../../services/data-types';
 import { getTransactionHistoryDetail } from '../../../services/member';
 
-export default function TransactionDetail({ transactionDetail }) {
+interface TransactionDetailProps {
+  transactionDetail: LatestTransactionTypes;
+}
+
+export default function TransactionDetail(props: TransactionDetailProps) {
+  const { transactionDetail } = props;
   return (
     <section className="transactions-detail overflow-auto">
       <Sidebar activeMenu="transactions" />
-      <TransactionDetailContent />
+      <TransactionDetailContent data={transactionDetail} />
     </section>
   );
 }

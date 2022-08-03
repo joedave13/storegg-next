@@ -75,7 +75,24 @@ export interface LatestTransactionTypes {
         thumbnail: string;
         coinName: string;
         coinQuantity: string;
+        price: number;
     };
+    historyPayment: {
+        name: string;
+        type: string;
+        bankName: string;
+        accountNumber: string;
+    };
+    historyUser: {
+        name: string;
+        phoneNumber: number;
+    };
+    tax: number;
     value: number;
     status: string;
+    name: string;
+    accountUser: string;
+    player: string;
+    category: string;
+    user: string;
 }
