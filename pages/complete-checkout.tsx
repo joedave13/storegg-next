@@ -286,7 +286,7 @@ export default function CompleteCheckout() {
   );
 }
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req }: any) {
   const { token } = req.cookies;
   if (!token) {
     return {
