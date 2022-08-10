@@ -50,6 +50,7 @@ export default function Auth() {
               width="40"
               height="40"
               alt=""
+              style={{ objectFit: 'cover' }}
             />
           </a>
 
