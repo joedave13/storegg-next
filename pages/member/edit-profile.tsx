@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -9,8 +8,14 @@ import Sidebar from '../../components/organisms/Sidebar';
 import { JWTPayloadTypes, UserTypes } from '../../services/data-types';
 import { updateProfile } from '../../services/member';
 
+interface UserStateTypes {
+  name: string;
+  email: string;
+  avatar: any;
+}
+
 export default function EditProfile() {
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<UserStateTypes>({
     name: '',
     email: '',
     avatar: '',

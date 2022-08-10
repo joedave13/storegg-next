@@ -10,8 +10,8 @@ import { getGameCategory } from '../services/player';
 export default function SignUpPhoto() {
   const [categories, setCategories] = useState([]);
   const [favorite, setFavorite] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatar, setAvatar] = useState<any>('');
+  const [avatarPreview, setAvatarPreview] = useState('/');
   const [localForm, setLocalForm] = useState({
     name: '',
     email: '',
@@ -69,17 +69,17 @@ export default function SignUpPhoto() {
               <div className="mb-20">
                 <div className="image-upload text-center">
                   <label htmlFor="avatar">
-                    {avatarPreview ? (
-                      <img
-                        src={avatarPreview}
-                        className="img-upload"
-                        alt="upload"
-                      />
-                    ) : (
+                    {avatarPreview === '/' ? (
                       <Image
                         src="/icon/upload.svg"
                         width={120}
                         height={120}
+                        alt="upload"
+                      />
+                    ) : (
+                      <img
+                        src={avatarPreview}
+                        className="img-upload"
                         alt="upload"
                       />
                     )}
