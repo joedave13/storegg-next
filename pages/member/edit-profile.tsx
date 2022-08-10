@@ -16,7 +16,7 @@ export default function EditProfile() {
     avatar: '',
   });
 
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState('/');
   const router = useRouter();
 
   useEffect(() => {
@@ -56,9 +56,9 @@ export default function EditProfile() {
               <div className="photo d-flex">
                 <div className="image-upload">
                   <label htmlFor="avatar">
-                    {imagePreview ? (
+                    {imagePreview === '/' ? (
                       <img
-                        src={imagePreview}
+                        src={`${IMG}/player/${user.avatar}`}
                         width={90}
                         height={90}
                         style={{ borderRadius: '100%', objectFit: 'cover' }}
@@ -66,7 +66,7 @@ export default function EditProfile() {
                       />
                     ) : (
                       <img
-                        src={`${IMG}/player/${user.avatar}`}
+                        src={imagePreview}
                         width={90}
                         height={90}
                         style={{ borderRadius: '100%', objectFit: 'cover' }}
